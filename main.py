@@ -28,9 +28,10 @@ class DealByParser(Parser):
                 continue
             seller = Seller(id)
             seller.deal_text = resp.text
+            seller.update_info()
             print(seller)
             self.sellers.append(seller)
-        self.save_object(self.sellers, 'sellers')
+            self.save_object(self.sellers, 'sellers')
 
     def save_sellers_from_html(self):
         sellers = []
@@ -41,26 +42,11 @@ class DealByParser(Parser):
             sellers.append(seller)
         self.save_object(sellers, 'sellers')
 
-
-        # for url in check_sellers_list:
-        #     print(url)
-        #     if f"{url.split('/')[-1]}.html" in os.listdir('html_files'):
-        #         self.sellers.append(Seller(url.split('/')[-1]))
-        #         continue
-        #     if int(url.split('/')[-1]) < parsed_maximum:
-        #         continue
-        #     resp = self.request_with_cookie(url)
-        #     if resp.status_code == 404:
-        #         continue
-        #     self.save_html(resp.text, f"{url.split('/')[-1]}.html")
-        #     self.sellers.append(Seller(url.split('/')[-1]))
-
     def request_with_cookie(self, url):
         headers = self.request.headers
         while True:
             resp = self.request.get(url, headers)
             if resp.status_code == 429:
-                self.save_object(self.sellers, 'sellers')
                 headers['Cookie'] = input('Пройти рекапчу и ввести куки')
             else:
                 break
@@ -91,15 +77,16 @@ class Seller:
 
     def update_deal_text_from_html(self):
         self.deal_text = self.read_html(f"{self.id}.html")
-        # soup = BeautifulSoup(self.deal_text, 'lxml')
-        # self.url_seller = soup.select_one('a.x-company-info__name')['href']
 
     def update_info(self):
-        pass
+        if self.deal_text:
+            soup = BeautifulSoup(self.deal_text, 'lxml')
+            self.url_seller = soup.select_one('a.x-company-info__name')['href']
+            self.name = soup.find('div', attrs={'data-qaid': 'company_name'}).text.replace('\n', '').strip()
+            self.deal_text = str()
 
 
 if __name__ == '__main__':
     parser = DealByParser()
-    # parser.save_sellers_from_html()
     parser.update_sellers()
 
