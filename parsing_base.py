@@ -66,6 +66,8 @@ class Request:
             return response
         elif response.status_code == 429:
             return response
+        elif response.status_code == 500:
+            return response
         else:
             print(response)
             sys.exit()
