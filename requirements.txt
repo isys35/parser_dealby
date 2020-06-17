@@ -1,5 +1,4 @@
 aiohttp==3.6.2
-altgraph==0.16.1
 async-timeout==3.0.1
 beautifulsoup4==4.8.1
 bs4==0.0.1
