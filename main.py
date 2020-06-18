@@ -88,6 +88,8 @@ class Seller:
 
     def update_contacts(self):
         print(f"Обновление контактов {self.id}")
+        if self.phones:
+            return
         parser = Parser()
         resp = parser.request.get(self.url_seller)
         phones = re.findall(r'(\+375\d+)|(\+375 \(\d{2}\) \d{3}-\d{2}-\d{2})', resp.text)
@@ -100,6 +102,5 @@ if __name__ == '__main__':
     sellers = parser.load_object('sellers')
     for seller in sellers:
         seller.update_contacts()
-    parser.save_object(sellers, 'sellers')
-    # parser.update_sellers()
+        parser.save_object(sellers, 'sellers'
 
