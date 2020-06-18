@@ -4,7 +4,6 @@ import os
 from bs4 import BeautifulSoup
 import time
 import pickle
-from exceptions import ErrorRequest
 import re
 from requests.exceptions import SSLError
 
