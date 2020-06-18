@@ -6,6 +6,7 @@ import time
 import pickle
 from exceptions import ErrorRequest
 import re
+from requests.exceptions import SSLError
 
 
 class DealByParser(Parser):
@@ -94,12 +95,13 @@ class Seller:
         parser = Parser()
         try:
             resp = parser.request.get(self.url_seller)
-        except ErrorRequest:
+        except SSLError:
             return
         phones = re.findall(r'(\+375\d+)|(\+375 \(\d{2}\) \d{3}-\d{2}-\d{2})', resp.text)
         self.phones = [phone for el in phones for phone in el if phone]
         emails = re.findall(r'\w+@\w+\.\w{2,3}', resp.text)
         self.emails = [email for email in emails if email != 'support@deal.by']
+
 
 if __name__ == '__main__':
     parser = DealByParser()
