@@ -71,7 +71,6 @@ class Seller:
         self.url_seller = str()
         self.phones = []
         self.emails = []
-        self.is_full_info = False
 
     def read_html(self, file_name):
         with open(f'html_files/{file_name}', 'r', encoding='utf8') as file:
@@ -88,8 +87,6 @@ class Seller:
             self.deal_text = str()
 
     def update_contacts(self):
-        if self.is_full_info:
-            return
         print(f"Обновление контактов {self.id}")
         parser = Parser()
         resp = parser.request.get(self.url_seller)
@@ -97,8 +94,6 @@ class Seller:
         self.phones = [phone for el in phones for phone in el if phone]
         emails = re.findall(r'\w+@\w+\.\w{2,3}', resp.text)
         self.emails = [email for email in emails if email != 'support@deal.by']
-        self.is_full_info = True
-
 
 if __name__ == '__main__':
     parser = DealByParser()
