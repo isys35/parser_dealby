@@ -105,7 +105,12 @@ class Seller:
 if __name__ == '__main__':
     parser = DealByParser()
     sellers = parser.load_object('sellers')
+    sellers_data = []
     for seller in sellers:
-        seller.update_contacts()
-        parser.save_object(sellers, 'sellers')
+        url = seller.url_seller
+        name = seller.name
+        phones = '\n'.join(list(set(seller.phones)))
+        emails = '\n'.join(list(set(seller.emails)))
+        sellers_data.append([url, name, phones, emails])
+    parser.save_excel(sellers_data, 'data.xls')
 

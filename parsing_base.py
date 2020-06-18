@@ -4,6 +4,7 @@ import os
 import asyncio, aiohttp
 import httplib2
 import pickle
+import xlwt
 from urllib.parse import unquote, quote
 
 
@@ -43,6 +44,14 @@ class Parser:
         response, content = h.request(url)
         with open(f"{image_name}", 'wb') as out:
             out.write(content)
+
+    def save_excel(self, data, file_name):
+        wb = xlwt.Workbook()
+        ws = wb.add_sheet('sheet')
+        for row in range(len(data)):
+            for column in range(len(data[row])):
+                ws.write(row, column, data[row][column])
+        wb.save(file_name)
 
     @staticmethod
     def split_list(lst, size_lst):
