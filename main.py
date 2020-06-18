@@ -102,5 +102,5 @@ if __name__ == '__main__':
     sellers = parser.load_object('sellers')
     for seller in sellers:
         seller.update_contacts()
-        parser.save_object(sellers, 'sellers'
+        parser.save_object(sellers, 'sellers')
 
